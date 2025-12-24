@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undangan Khitanan</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+html{scroll-behavior:smooth}
+
+body{
+    background:url('kelirwayang.jpg') center/cover fixed;
+    color:gold;
+}
+
+/* ===== BLENCONG ===== */
+.blencong{
+    position:fixed;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    width:700px;height:1000px;
+    background:radial-gradient(circle,rgba(255,200,80,.35),rgba(0,0,0,0) 70%);
+    opacity:0;
+    pointer-events:none;
+    z-index:2;
+    animation:flicker 2.5s infinite;
+    transition:opacity 2s ease;
+}
+.blencong.show{opacity:1}
+@keyframes flicker{
+    0%{opacity:.85}50%{opacity:1}100%{opacity:.9}
+}
+
+/* ===== WAYANG ===== */
+.wayang{
+    position:fixed;
+    bottom:-20px;
+    width:190px;
+    opacity:0;
+    z-index:3;
+    pointer-events:none;
+    transition:all 1.5s ease;
+    animation:goyang 5s ease-in-out infinite;
+}
+.wayang-kiri{left:-220px}
+.wayang-kanan{right:-220px;transform:scaleX(-1)}
+.wayang.show{opacity:.9}
+.wayang-kiri.show{left:-40px}
+.wayang-kanan.show{right:-40px}
+
+@keyframes goyang{
+    0%{transform:rotate(-1.5deg) translateY(0)}
+    50%{transform:rotate(1.5deg) translateY(-8px)}
+    100%{transform:rotate(-1.5deg) translateY(0)}
+}
+
+/* ===== OVERLAY ===== */
+.overlay{
+    background:rgba(0,0,0,.8);
+    min-height:100vh;
+    padding:40px 15px;
+    position:relative;
+    z-index:5;
+}
+
+/* ===== OPENING ===== */
+.opening{text-align:center}
+.opening h1{
+    font-family:'Playfair Display',serif;
+    color:gold;font-size:42px
+}
+.hero-photo{
+    width:240px;height:330px;
+    object-fit:cover;
+    border:4px solid gold;
+    margin:20px auto;
+    display:block;
+}
+.btn-open{
+    padding:14px 35px;
+    background:gold;
+    color:#5c3417;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* ===== CARD ===== */
+.card{
+    display:none;
+    max-width:650px;
+    margin:0 auto;
+    padding:30px;
+    border:2px solid gold;
+    border-radius:18px;
+    background:url('kelirwayang2.jpeg') center/cover;
+}
+
+.divider{
+    width:120px;height:2px;
+    background:gold;margin:25px auto
+}
+
+.button{
+    display:block;
+    background:gold;
+    color:#5c3417;
+    padding:12px;
+    border-radius:25px;
+    text-decoration:none;
+    margin:15px 0;
+}
+
+/* ===== SCROLL ANIMATION ===== */
+.animate{
+    opacity:0;
+    transform:translateY(40px);
+    transition:all .8s ease;
+}
+.animate.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ===== MUSIC ===== */
+.music-control{
+    display:none;
+    position:fixed;
+    bottom:15px;right:15px;
+    background:gold;
+    color:#5c3417;
+    padding:10px 15px;
+    border-radius:30px;
+    cursor:pointer;
+    z-index:10;
+}
+
+/* ===== GLOW TEKS JUDUL ===== */
+.glow-title{
+    color: gold;
+    text-align: center;
+    animation: glowWayang 2.5s ease-in-out infinite;
+    text-shadow:
+        0 0 5px #ffdf9e,
+        0 0 15px #ffb300,
+        0 0 30px rgba(255,180,0,0.8);
+}
+
+@keyframes glowWayang{
+    0%{
+        text-shadow:
+        0 0 5px #ffdf9e,
+        0 0 15px #ffb300,
+        0 0 30px rgba(255,180,0,0.6);
+    }
+    50%{
+        text-shadow:
+        0 0 10px #fff3c4,
+        0 0 30px #ffb300,
+        0 0 60px rgba(255,180,0,1);
+    }
+    100%{
+        text-shadow:
+        0 0 5px #ffdf9e,
+        0 0 15px #ffb300,
+        0 0 30px rgba(255,180,0,0.6);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BLENCONG & WAYANG -->
+<div class="blencong" id="blencong"></div>
+<img src="wayang-kiri.png" class="wayang wayang-kiri" id="wayangKiri">
+<img src="wayang-kanan.png" class="wayang wayang-kanan" id="wayangKanan">
+
+<audio id="music" loop>
+    <source src="musik.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay">
+
+<!-- OPENING -->
+<div class="opening" id="opening">
+    <h1 class="animate glow-title">Undangan Khitanan</h1>
+    <img src="foto.jpeg" class="hero-photo animate">
+    <h2 class="animate" style="color:gold">Pranaya & Fathan</h2>
+    <p class="animate">Senin, 12 Januari 2026</p>
+<!-- COUNTDOWN -->
+    <div class="countdown animate" id="countdown"></div>
+    <p class="animate">Kepada Yth:</p>
+    <h2 id="namaTamu" class="animate" style="color:#ffdf9e"></h2>
+    <button class="btn-open animate" onclick="bukaUndangan()">Buka Undangan</button>
+</div>
+
+<!-- UNDANGAN -->
+<div class="card" id="undangan">
+<p align=center class="animate">Assalamu’alaikum Warahmatullahi Wabarakatuh<br><br>
+Alhamdulillah Wasyukurillah Wani'matan lillah atas limpahan rahmat dan karunia Allah SWT.
+
+Atas rahmat dan karunia Allah SWT tersebut, kami berencana untuk menggelar acara tasyakuran walimatul khitan anak kami:</p><br><br>
+<img src="foto.jpeg" class="hero-photo animate"><br><br>
+<h2 align=center class="animate" style="color:gold">PRANAYA ISLAMI AKHTAR</h2>
+<p align=center class="animate">Putra Pertama</p>
+<h2 align=center class="animate" style="color:gold">NARENDRA ABDILLAH FATHAN</h2>
+<p align=center class="animate">Putra Kedua</p>
+<p align=center class="animate">dari Bapak <b>TASRONI, S.H.</b>
+dan Ibu <b>DWI SRI UTAMI, S.Pd.</b>
+    </p>
+
+
+<div class="divider"></div><br>
+
+<p align=center class="animate">
+Acara tasyakuran insyaAllah dilaksanakan pada:<br>
+    📅 <b>Senin, 12 Januari 2026</b><br>
+    ⏰ <b>11.00 WIB – Selesai</b><br><br><br>
+    📍 <b>Jl. dr. Karyadi Rt.04 Rw.04 Dukuhwringin Kec. Slawi Kab. Tegal</b>
+    </p>
+
+<a align=center class="button animate" target="_blank"
+href="https://maps.app.goo.gl/FFB6Ak7JjEqPBBRSA">
+📍 Lihat Lokasi (Google Maps) </a><br>
+</a>
+<p align=center class="animate" style="margin-top:20px;">
+    Suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk menghadiri acara tasyakuran putra kami.
+
+Atas kesediaannya dan doa restu dari Bapak/Ibu/Saudara/i kami aturkan rasa terima kasih. Semoga Allah SWT yang akan membalas kemurahan hati Bapak/Ibu/Saudara/i.<br>
+<br>Wassalamu’alaikum Warahmatullahi Wabarakatuh
+    </p> <br>
+
+    <p align=center class="animate"><b>Kami Yang Berbahagia,<br>
+
+Bpk. TASRONI, S.H.<br>
+Ibu DWI SRI UTAMI, S.Pd.</b></p><br><br>
+
+<h3 align=center class="animate">📩 Konfirmasi Kehadiran</h3>
+<a align=center class="button animate" target="_blank"
+href="https://wa.me/6285799609922?text=Halo,%20saya%20akan%20hadir%20di%20acara Tasyakuran Khitan%20Pranaya%20Dan%20Fathan">Via WhatsApp</a></p>
+</div>
+
+<div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵 Musik</div>
+
+</div>
+
+<script>
+// Nama Tamu
+const params=new URLSearchParams(location.search);
+namaTamu.innerText=params.get("tamu")||"Bapak/Ibu/Saudara/i";
+
+// Buka Undangan
+function bukaUndangan(){
+    opening.style.display="none";
+    undangan.style.display="block";
+    musicBtn.style.display="block";
+    music.play();
+
+    setTimeout(()=>{
+        wayangKiri.classList.add("show");
+        wayangKanan.classList.add("show");
+        blencong.classList.add("show");
+    },300);
+}
+
+// Musik
+function toggleMusic(){music.paused?music.play():music.pause()}
+
+// ===== COUNTDOWN =====
+const eventDate = new Date("2026-01-12T11:00:00").getTime();
+setInterval(()=>{
+    const now = new Date().getTime();
+    const diff = eventDate - now;
+
+    if(diff <= 0){
+        countdown.innerHTML = "🎉 Acara sedang berlangsung";
+        return;
+    }
+
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+
+    countdown.innerHTML = `⏳ ${d} Hari ${h} Jam ${m} Menit Lagi`;
+},1000);
+
+// Scroll Animation
+const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting)e.target.classList.add("show");
+    });
+},{threshold:.2});
+
+document.querySelectorAll(".animate").forEach(el=>observer.observe(el));
+
+// Parallax Wayang
+window.addEventListener("scroll",()=>{
+    const y=scrollY;
+    wayangKiri.style.transform=`translateY(${y*.08}px) rotate(${y*.01}deg)`;
+    wayangKanan.style.transform=`translateY(${y*.08}px) rotate(${-y*.01}deg)`;
+});
+</script>
+
+</body>
+</html>
