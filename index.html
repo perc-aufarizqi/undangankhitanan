@@ -170,10 +170,53 @@ body{
         0 0 30px rgba(255,180,0,0.6);
     }
 }
+
+/* ===== PINTU WAYANG ===== */
+.door-container{
+    position:fixed;
+    inset:0;
+    display:flex;
+    z-index:4; /* DI BAWAH OPENING */
+    pointer-events:none;
+}
+
+.door{
+    width:50%;
+    height:100%;
+    background:url('kelirwayang.jpg') center/cover no-repeat;
+    transition:transform 1.8s cubic-bezier(.77,0,.18,1);
+}
+
+/* POSISI AWAL = TERTUTUP */
+.door.left{
+    transform:translateX(0);
+}
+
+.door.right{
+    transform:translateX(0);
+}
+
+/* SAAT DIBUKA */
+.door-container.open .left{
+    transform:translateX(-100%);
+}
+
+.door-container.open .right{
+    transform:translateX(100%);
+}
+
+
 </style>
 </head>
 
 <body>
+
+
+<!-- PINTU PEMBUKA -->
+<div class="door-container" id="door">
+    <div class="door left"></div>
+    <div class="door right"></div>
+</div>
 
 <!-- BLENCONG & WAYANG -->
 <div class="blencong" id="blencong"></div>
@@ -255,17 +298,28 @@ const params=new URLSearchParams(location.search);
 namaTamu.innerText=params.get("tamu")||"Bapak/Ibu/Saudara/i";
 
 // Buka Undangan
+
 function bukaUndangan(){
-    opening.style.display="none";
-    undangan.style.display="block";
-    musicBtn.style.display="block";
+
+    // BUKA PINTU
+    door.classList.add("open");
+
+    // Musik & efek
     music.play();
+    musicBtn.style.display="block";
 
     setTimeout(()=>{
         wayangKiri.classList.add("show");
         wayangKanan.classList.add("show");
         blencong.classList.add("show");
-    },300);
+    },400);
+
+    // SETELAH ANIMASI SELESAI
+    setTimeout(()=>{
+        opening.style.display="none";
+        undangan.style.display="block";
+        door.style.display="none";
+    },1800);
 }
 
 // Musik
