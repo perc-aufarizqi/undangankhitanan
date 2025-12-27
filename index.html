@@ -79,6 +79,15 @@ body{
     margin:20px auto;
     display:block;
 }
+
+.hero-photo1{
+    width:240px;height:330px;
+    border:4px solid gold;
+    margin:20px auto;
+    display:block;
+}
+
+
 .btn-open{
     padding:14px 35px;
     background:gold;
@@ -91,6 +100,7 @@ body{
 
 /* ===== CARD ===== */
 .card{
+    padding-top:120px;
     display:none;
     max-width:650px;
     margin:0 auto;
@@ -184,8 +194,11 @@ body{
     width:50%;
     height:100%;
     background:url('kelirwayang.jpg') center/cover no-repeat;
-    transition:transform 1.8s cubic-bezier(.77,0,.18,1);
+
+    /* DURASI DIPERLAMBAT */
+    transition:transform 3.5s cubic-bezier(.55,.01,.25,1);
 }
+
 
 /* POSISI AWAL = TERTUTUP */
 .door.left{
@@ -203,6 +216,49 @@ body{
 
 .door-container.open .right{
     transform:translateX(100%);
+}
+
+.door{
+    filter:brightness(.9);
+}
+
+.door-container.open .door{
+    filter:brightness(1.05);
+}
+/* ===== KELIR CARD ===== */
+.card{
+    position:relative; /* PENTING */
+}
+
+/* KELIR UMUM */
+.kelir{
+    position:sticky;
+    top:10px;
+    width:90px;
+    opacity:0.85;
+    z-index:2;
+    pointer-events:none;
+    animation:kelirGoyang 4.5s ease-in-out infinite;
+}
+
+/* KIRI */
+.kelir-kiri{
+    left:10px;
+    float:left;
+}
+
+/* KANAN */
+.kelir-kanan{
+    right:10px;
+    float:right;
+    transform:scaleX(-1);
+}
+
+/* ANIMASI GOYANG */
+@keyframes kelirGoyang{
+    0%{transform:rotate(-2deg)}
+    50%{transform:rotate(2deg)}
+    100%{transform:rotate(-2deg)}
 }
 
 
@@ -244,15 +300,26 @@ body{
 
 <!-- UNDANGAN -->
 <div class="card" id="undangan">
+<!-- ORNAMEN KELIR CARD -->
+<img src="wayang-kiri.png" class="kelir kelir-kiri">
+<img src="wayang-kanan.png" class="kelir kelir-kanan">
+
+<h1 class="animate glow-title">Tasyakuran Khitan</h1>
+    <img src="foto.jpeg" class="hero-photo animate">
+<p align=center class="animate">Yaa Allah, Muliakan anak kami ini,
+panjangkanlah umurnya, terangilah hatinya, teguhkanlah imannya, perbaikilah amal perbuatannya,
+lapangkanlah rejekinya, dekatkanlah pada kebaikan, dan jauhkanlah dari keburukan.Aamiin...<br><br>
+
 <p align=center class="animate">Assalamu’alaikum Warahmatullahi Wabarakatuh<br><br>
 Alhamdulillah Wasyukurillah Wani'matan lillah atas limpahan rahmat dan karunia Allah SWT.
 
 Atas rahmat dan karunia Allah SWT tersebut, kami berencana untuk menggelar acara tasyakuran walimatul khitan anak kami:</p><br><br>
-<img src="foto.jpeg" class="hero-photo animate"><br><br>
+<img src="pranaya.jpg" class="hero-photo1 animate"><br>
 <h2 align=center class="animate" style="color:gold">PRANAYA ISLAMI AKHTAR</h2>
 <p align=center class="animate">Putra Pertama</p>
+<img src="fathan.jpg" class="hero-photo1 animate"><br>
 <h2 align=center class="animate" style="color:gold">NARENDRA ABDILLAH FATHAN</h2>
-<p align=center class="animate">Putra Kedua</p>
+<p align=center class="animate">Putra Kedua</p><br>
 <p align=center class="animate">dari Bapak <b>TASRONI, S.H.</b>
 dan Ibu <b>DWI SRI UTAMI, S.Pd.</b>
     </p>
@@ -272,7 +339,7 @@ href="https://maps.app.goo.gl/FFB6Ak7JjEqPBBRSA">
 📍 Lihat Lokasi (Google Maps) </a><br>
 </a>
 <p align=center class="animate" style="margin-top:20px;">
-    Suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk menghadiri acara tasyakuran putra kami.
+    Suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk menghadiri acara tasyakuran putra kami.<br>
 
 Atas kesediaannya dan doa restu dari Bapak/Ibu/Saudara/i kami aturkan rasa terima kasih. Semoga Allah SWT yang akan membalas kemurahan hati Bapak/Ibu/Saudara/i.<br>
 <br>Wassalamu’alaikum Warahmatullahi Wabarakatuh
@@ -316,10 +383,15 @@ function bukaUndangan(){
 
     // SETELAH ANIMASI SELESAI
     setTimeout(()=>{
-        opening.style.display="none";
-        undangan.style.display="block";
-        door.style.display="none";
-    },1800);
+    opening.style.display="none";
+    undangan.style.display="block";
+    door.style.display="none";
+},3500);
+
+setTimeout(()=>{
+    door.classList.add("open");
+},300);
+
 }
 
 // Musik
@@ -358,9 +430,14 @@ window.addEventListener("scroll",()=>{
     wayangKiri.style.transform=`translateY(${y*.08}px) rotate(${y*.01}deg)`;
     wayangKanan.style.transform=`translateY(${y*.08}px) rotate(${-y*.01}deg)`;
 });
+
+window.addEventListener("scroll",()=>{
+    const y = window.scrollY * 0.05;
+    document.querySelectorAll(".kelir").forEach(k=>{
+        k.style.transform = `translateY(${y}px) rotate(${y*.2}deg)`;
+    });
+});
 </script>
 
 </body>
 </html>
-
-
